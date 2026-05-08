@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TechSpace - สินค้า</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="../dist/output.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Sarabun', sans-serif; }
+    .card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+    .modal-backdrop { backdrop-filter: blur(4px); }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+  <!-- NAVBAR -->
+  <nav class="bg-white shadow-md sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="flex items-center gap-3">
+          <div class="w-9 h-9 bg-gradient-to-br from-blue-600 to-orange-400 rounded-xl flex items-center justify-center shadow">
+            <span class="text-white font-extrabold text-lg">T</span>
+          </div>
+          <span class="text-xl font-bold text-blue-700">Tech<span class="text-orange-500">Space</span></span>
+        </a>
+        <div class="hidden md:flex items-center gap-8">
+          <a href="index.html" class="text-gray-600 hover:text-blue-700 font-medium transition-colors">หน้าหลัก</a>
+          <a href="products.html" class="text-blue-700 font-semibold border-b-2 border-orange-400 pb-1">สินค้า</a>
+          <a href="blog.html" class="text-gray-600 hover:text-blue-700 font-medium transition-colors">บทความ</a>
+          <a href="contact.html" class="text-gray-600 hover:text-blue-700 font-medium transition-colors">ติดต่อ</a>
+          <button onclick="openModal('loginModal')" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-semibold text-sm transition-colors">เข้าสู่ระบบ</button>
+        </div>
+        <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg hover:bg-gray-100">
+          <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden bg-white border-t px-4 py-4 space-y-3">
+      <a href="index.html" class="block text-gray-700 py-2 px-3 rounded-lg hover:bg-gray-50">หน้าหลัก</a>
+      <a href="products.html" class="block text-blue-700 font-semibold py-2 px-3 rounded-lg bg-blue-50">สินค้า</a>
+      <a href="blog.html" class="block text-gray-700 py-2 px-3 rounded-lg hover:bg-gray-50">บทความ</a>
+      <a href="contact.html" class="block text-gray-700 py-2 px-3 rounded-lg hover:bg-gray-50">ติดต่อ</a>
+    </div>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <div class="bg-gradient-to-r from-blue-700 to-blue-600 text-white py-12 px-4">
+    <div class="max-w-7xl mx-auto">
+      <h1 class="text-3xl md:text-4xl font-extrabold mb-2">🛍️ สินค้าทั้งหมด</h1>
+      <p class="text-blue-200">เลือกซื้อสินค้าเทคโนโลยีคุณภาพสูง ราคาดีที่สุด</p>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 py-8">
+    <!-- Filter Bar -->
+    <div class="flex flex-wrap gap-3 mb-8">
+      <button class="bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-semibold">ทั้งหมด</button>
+      <button onclick="filterCategory('laptop')" class="bg-white border border-gray-200 text-gray-700 hover:border-blue-400 hover:text-blue-600 px-4 py-2 rounded-full text-sm font-medium transition-colors">💻 Laptop</button>
+      <button onclick="filterCategory('phone')" class="bg-white border border-gray-200 text-gray-700 hover:border-blue-400 hover:text-blue-600 px-4 py-2 rounded-full text-sm font-medium transition-colors">📱 Smartphone</button>
+      <button onclick="filterCategory('audio')" class="bg-white border border-gray-200 text-gray-700 hover:border-blue-400 hover:text-blue-600 px-4 py-2 rounded-full text-sm font-medium transition-colors">🎧 Audio</button>
+      <button onclick="filterCategory('watch')" class="bg-white border border-gray-200 text-gray-700 hover:border-blue-400 hover:text-blue-600 px-4 py-2 rounded-full text-sm font-medium transition-colors">⌚ Wearable</button>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="productGrid">
+
+      <!-- Product 1 -->
+      <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+        <div class="relative">
+          <div class="h-44 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
+            <span class="text-5xl">💻</span>
+          </div>
+          <span class="absolute top-3 left-3 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-bold">-15%</span>
+          <button onclick="openModal('quickviewModal')" class="absolute top-3 right-3 bg-white/90 hover:bg-white text-gray-700 p-1.5 rounded-full shadow transition-colors" title="ดูรายละเอียด">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+          </button>
+        </div>
+        <div class="p-4">
+          <div class="text-xs font-bold text-orange-500 mb-1">LAPTOP</div>
+          <h3 class="font-bold text-gray-900 mb-1 text-sm leading-snug">MacBook Pro 14" M3 Pro</h3>
+          <div class="flex items-baseline gap-2 mb-3">
+            <span class="text-lg font-extrabold text-blue-700">฿89,900</span>
+            <span class="text-gray-400 text-xs line-through">฿105,900</span>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="openModal('cartModal')" class="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg text-xs font-bold transition-colors">🛒 ซื้อเลย</button>
+            <button class="p-2 border border-gray-200 rounded-lg hover:border-red-300 hover:text-red-500 transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product 2 -->
+      <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+        <div class="relative">
+          <div class="h-44 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+            <span class="text-5xl">💻</span>
+          </div>
+          <button onclick="openModal('quickviewModal')" class="absolute top-3 right-3 bg-white/90 hover:bg-white text-gray-700 p-1.5 rounded-full shadow transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+          </button>
+        </div>
+        <div class="p-4">
+          <div class="text-xs font-bold text-orange-500 mb-1">LAPTOP</div>
+          <h3 class="font-bold text-gray-900 mb-1 text-sm">Dell XPS 15 OLED</h3>
+          <div class="flex items-baseline gap-2 mb-3">
+            <span class="text-lg font-extrabold text-blue-700">฿62,900</span>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="openModal('cartModal')" class="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg text-xs font-bold transition-colors">🛒 ซื้อเลย</button>
+            <button class="p-2 border border-gray-200 rounded-lg hover:border-red-300 hover:text-red-500 transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product 3 -->
+      <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+        <div class="relative">
+          <div class="h-44 bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center">
+            <span class="text-5xl">📱</span>
+          </div>
+          <span class="absolute top-3 left-3 bg-green-500 text-white text-xs px-2 py-0.5 rounded-full font-bold">ใหม่</span>
+          <button onclick="openModal('quickviewModal')" class="absolute top-3 right-3 bg-white/90 hover:bg-white text-gray-700 p-1.5 rounded-full shadow transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+          </button>
+        </div>
+        <div class="p-4">
+          <div class="text-xs font-bold text-orange-500 mb-1">SMARTPHONE</div>
+          <h3 class="font-bold text-gray-900 mb-1 text-sm">iPhone 15 Pro Max 256GB</h3>
+          <div class="flex items-baseline gap-2 mb-3">
+            <span class="text-lg font-extrabold text-blue-700">฿52,900</span>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="openModal('cartModal')" class="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg text-xs font-bold transition-colors">🛒 ซื้อเลย</button>
+            <button class="p-2 border border-gray-200 rounded-lg hover:border-red-300 hover:text-red-500 transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product 4 -->
+      <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+        <div class="relative">
+          <div class="h-44 bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
+            <span class="text-5xl">🎧</span>
+          </div>
+          <button onclick="openModal('quickviewModal')" class="absolute top-3 right-3 bg-white/90 hover:bg-white text-gray-700 p-1.5 rounded-full shadow transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+          </button>
+        </div>
+        <div class="p-4">
+          <div class="text-xs font-bold text-orange-500 mb-1">AUDIO</div>
+          <h3 class="font-bold text-gray-900 mb-1 text-sm">Sony WH-1000XM5</h3>
+          <div class="flex items-baseline gap-2 mb-3">
+            <span class="text-lg font-extrabold text-blue-700">฿12,900</span>
+            <span class="text-gray-400 text-xs line-through">฿14,990</span>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="openModal('cartModal')" class="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg text-xs font-bold transition-colors">🛒 ซื้อเลย</button>
+            <button class="p-2 border border-gray-200 rounded-lg hover:border-red-300 hover:text-red-500 transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product 5 -->
+      <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+        <div class="relative">
+          <div class="h-44 bg-gradient-to-br from-rose-100 to-rose-200 flex items-center justify-center">
+            <span class="text-5xl">⌚</span>
+          </div>
+          <button onclick="openModal('quickviewModal')" class="absolute top-3 right-3 bg-white/90 hover:bg-white text-gray-700 p-1.5 rounded-full shadow transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+          </button>
+        </div>
+        <div class="p-4">
+          <div class="text-xs font-bold text-orange-500 mb-1">WEARABLE</div>
+          <h3 class="font-bold text-gray-900 mb-1 text-sm">Apple Watch Series 9</h3>
+          <div class="flex items-baseline gap-2 mb-3">
+            <span class="text-lg font-extrabold text-blue-700">฿15,900</span>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="openModal('cartModal')" class="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg text-xs font-bold transition-colors">🛒 ซื้อเลย</button>
+            <button class="p-2 border border-gray-200 rounded-lg hover:border-red-300 hover:text-red-500 transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product 6 -->
+      <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+        <div class="relative">
+          <div class="h-44 bg-gradient-to-br from-indigo-100 to-indigo-200 flex items-center justify-center">
+            <span class="text-5xl">📱</span>
+          </div>
+          <span class="absolute top-3 left-3 bg-blue-500 text-white text-xs px-2 py-0.5 rounded-full font-bold">Hot</span>
+          <button onclick="openModal('quickviewModal')" class="absolute top-3 right-3 bg-white/90 hover:bg-white text-gray-700 p-1.5 rounded-full shadow transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+          </button>
+        </div>
+        <div class="p-4">
+          <div class="text-xs font-bold text-orange-500 mb-1">SMARTPHONE</div>
+          <h3 class="font-bold text-gray-900 mb-1 text-sm">Samsung Galaxy S24 Ultra</h3>
+          <div class="flex items-baseline gap-2 mb-3">
+            <span class="text-lg font-extrabold text-blue-700">฿44,900</span>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="openModal('cartModal')" class="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg text-xs font-bold transition-colors">🛒 ซื้อเลย</button>
+            <button class="p-2 border border-gray-200 rounded-lg hover:border-red-300 hover:text-red-500 transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-gray-900 text-gray-300 py-10 px-4 mt-10">
+    <div class="max-w-7xl mx-auto text-center text-sm text-gray-500">
+      © 2567 TechSpace. สงวนลิขสิทธิ์ทุกประการ
+    </div>
+  </footer>
+
+  <!-- Quick View Modal -->
+  <div id="quickviewModal" class="fixed inset-0 z-50 hidden items-center justify-center modal-backdrop bg-black/50" onclick="closeModalOutside(event,'quickviewModal')">
+    <div class="bg-white w-full max-w-2xl mx-4 rounded-2xl shadow-2xl overflow-hidden">
+      <div class="flex items-center justify-between px-6 py-4 border-b">
+        <h3 class="text-lg font-bold text-gray-900">รายละเอียดสินค้า</h3>
+        <button onclick="closeModal('quickviewModal')" class="text-gray-400 hover:text-gray-700"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+      </div>
+      <div class="p-6 flex flex-col md:flex-row gap-6">
+        <div class="h-40 md:w-48 flex-shrink-0 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center">
+          <span class="text-6xl">💻</span>
+        </div>
+        <div class="flex-1">
+          <span class="text-xs font-bold text-orange-500 uppercase">LAPTOP</span>
+          <h2 class="text-2xl font-extrabold text-gray-900 mt-1 mb-2">MacBook Pro 14" M3 Pro</h2>
+          <p class="text-gray-500 text-sm mb-4 leading-relaxed">ชิป Apple M3 Pro 11-core CPU, 14-core GPU, หน่วยความจำ 18GB, SSD 512GB จอ Liquid Retina XDR 14.2 นิ้ว</p>
+          <div class="flex items-center gap-2 mb-2"><span class="text-yellow-400 text-sm">★★★★★</span><span class="text-gray-500 text-xs">(128 รีวิว)</span></div>
+          <div class="flex items-baseline gap-3 mb-4">
+            <span class="text-3xl font-extrabold text-blue-700">฿89,900</span>
+            <span class="text-gray-400 line-through text-sm">฿105,900</span>
+            <span class="bg-red-100 text-red-600 text-xs font-bold px-2 py-0.5 rounded">ประหยัด 15%</span>
+          </div>
+          <div class="flex gap-3">
+            <button onclick="closeModal('quickviewModal');openModal('cartModal')" class="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-xl font-bold transition-colors">เพิ่มลงตะกร้า</button>
+            <button onclick="closeModal('quickviewModal')" class="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-4 py-3 rounded-xl font-bold transition-colors">ปิด</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Modal -->
+  <div id="cartModal" class="fixed inset-0 z-50 hidden items-center justify-center modal-backdrop bg-black/50" onclick="closeModalOutside(event,'cartModal')">
+    <div class="bg-white w-full max-w-sm mx-4 rounded-2xl shadow-2xl overflow-hidden">
+      <div class="bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-5 flex items-center justify-between">
+        <h3 class="text-white text-xl font-bold">เพิ่มลงตะกร้าแล้ว!</h3>
+        <button onclick="closeModal('cartModal')" class="text-white/80 hover:text-white"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+      </div>
+      <div class="p-6 text-center">
+        <div class="text-5xl mb-4">✅</div>
+        <p class="text-gray-700 font-semibold text-lg mb-6">เพิ่มสินค้าสำเร็จ</p>
+        <div class="flex gap-3">
+          <button onclick="closeModal('cartModal')" class="flex-1 border-2 border-gray-200 text-gray-700 py-2.5 rounded-xl font-semibold hover:bg-gray-50">ช้อปต่อ</button>
+          <button onclick="closeModal('cartModal')" class="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-2.5 rounded-xl font-bold">ตะกร้า</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div id="loginModal" class="fixed inset-0 z-50 hidden items-center justify-center modal-backdrop bg-black/50" onclick="closeModalOutside(event,'loginModal')">
+    <div class="bg-white w-full max-w-md mx-4 rounded-2xl shadow-2xl overflow-hidden">
+      <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-5 flex items-center justify-between">
+        <h3 class="text-white text-xl font-bold">เข้าสู่ระบบ</h3>
+        <button onclick="closeModal('loginModal')" class="text-white/80 hover:text-white"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+      </div>
+      <div class="p-6 space-y-4">
+        <div><label class="block text-sm font-semibold text-gray-700 mb-1">อีเมล</label><input type="email" placeholder="example@email.com" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"/></div>
+        <div><label class="block text-sm font-semibold text-gray-700 mb-1">รหัสผ่าน</label><input type="password" placeholder="••••••••" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"/></div>
+        <button onclick="closeModal('loginModal')" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold">เข้าสู่ระบบ</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openModal(id) { const m=document.getElementById(id); m.classList.remove('hidden'); m.classList.add('flex'); document.body.style.overflow='hidden'; }
+    function closeModal(id) { const m=document.getElementById(id); m.classList.add('hidden'); m.classList.remove('flex'); document.body.style.overflow=''; }
+    function closeModalOutside(e,id) { if(e.target===document.getElementById(id)) closeModal(id); }
+    function toggleMobileMenu() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
+    function filterCategory(cat) { alert('กรองสินค้าหมวด: '+cat); }
+  </script>
+</body>
+</html>

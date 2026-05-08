@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TechSpace - บทความ</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="../dist/output.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Sarabun', sans-serif; }
+    .card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(0,0,0,0.1); }
+    .modal-backdrop { backdrop-filter: blur(4px); }
+  </style>
+</head>
+<body class="bg-gray-50">
+
+  <!-- NAVBAR -->
+  <nav class="bg-white shadow-md sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="flex items-center gap-3">
+          <div class="w-9 h-9 bg-gradient-to-br from-blue-600 to-orange-400 rounded-xl flex items-center justify-center shadow">
+            <span class="text-white font-extrabold text-lg">T</span>
+          </div>
+          <span class="text-xl font-bold text-blue-700">Tech<span class="text-orange-500">Space</span></span>
+        </a>
+        <div class="hidden md:flex items-center gap-8">
+          <a href="index.html" class="text-gray-600 hover:text-blue-700 font-medium transition-colors">หน้าหลัก</a>
+          <a href="products.html" class="text-gray-600 hover:text-blue-700 font-medium transition-colors">สินค้า</a>
+          <a href="blog.html" class="text-blue-700 font-semibold border-b-2 border-orange-400 pb-1">บทความ</a>
+          <a href="contact.html" class="text-gray-600 hover:text-blue-700 font-medium transition-colors">ติดต่อ</a>
+          <button onclick="openModal('loginModal')" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-semibold text-sm">เข้าสู่ระบบ</button>
+        </div>
+        <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg hover:bg-gray-100">
+          <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden bg-white border-t px-4 py-4 space-y-3">
+      <a href="index.html" class="block text-gray-700 py-2 px-3 rounded-lg hover:bg-gray-50">หน้าหลัก</a>
+      <a href="products.html" class="block text-gray-700 py-2 px-3 rounded-lg hover:bg-gray-50">สินค้า</a>
+      <a href="blog.html" class="block text-blue-700 font-semibold py-2 px-3 rounded-lg bg-blue-50">บทความ</a>
+      <a href="contact.html" class="block text-gray-700 py-2 px-3 rounded-lg hover:bg-gray-50">ติดต่อ</a>
+    </div>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <div class="bg-gradient-to-r from-blue-700 to-blue-600 text-white py-12 px-4">
+    <div class="max-w-7xl mx-auto">
+      <h1 class="text-3xl md:text-4xl font-extrabold mb-2">📰 บทความ & ข่าวสาร</h1>
+      <p class="text-blue-200">อัปเดตเทคโนโลยีใหม่ล่าสุด บทวิจารณ์ และเคล็ดลับต่างๆ</p>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 py-10">
+
+    <!-- Tags -->
+    <div class="flex flex-wrap gap-2 mb-8">
+      <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold cursor-pointer">ทั้งหมด</span>
+      <span class="bg-white border border-gray-200 text-gray-600 hover:border-blue-400 hover:text-blue-600 px-3 py-1 rounded-full text-sm cursor-pointer transition-colors">รีวิว</span>
+      <span class="bg-white border border-gray-200 text-gray-600 hover:border-blue-400 hover:text-blue-600 px-3 py-1 rounded-full text-sm cursor-pointer transition-colors">เปรียบเทียบ</span>
+      <span class="bg-white border border-gray-200 text-gray-600 hover:border-blue-400 hover:text-blue-600 px-3 py-1 rounded-full text-sm cursor-pointer transition-colors">คู่มือ</span>
+      <span class="bg-white border border-gray-200 text-gray-600 hover:border-blue-400 hover:text-blue-600 px-3 py-1 rounded-full text-sm cursor-pointer transition-colors">ข่าวสาร</span>
+    </div>
+
+    <!-- Featured Article -->
+    <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-md border border-gray-100 mb-8 cursor-pointer" onclick="openModal('articleModal')">
+      <div class="flex flex-col md:flex-row">
+        <div class="md:w-2/5 h-56 md:h-auto bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+          <span class="text-8xl">🤖</span>
+        </div>
+        <div class="flex-1 p-6 md:p-8">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="bg-orange-100 text-orange-600 text-xs font-bold px-2 py-0.5 rounded">บทความแนะนำ</span>
+            <span class="bg-blue-100 text-blue-600 text-xs font-bold px-2 py-0.5 rounded">AI</span>
+          </div>
+          <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-3 leading-snug">AI ในปี 2025: เทคโนโลยีที่จะเปลี่ยนโลก</h2>
+          <p class="text-gray-500 mb-4 leading-relaxed">ปัญญาประดิษฐ์กำลังก้าวหน้าอย่างรวดเร็ว ทั้ง ChatGPT, Gemini และ Claude ต่างแข่งขันกันพัฒนาความสามารถ...</p>
+          <div class="flex items-center gap-4 text-sm text-gray-400">
+            <span>✍️ ทีมงาน TechSpace</span>
+            <span>📅 1 พ.ค. 2568</span>
+            <span>👁️ 8,234 views</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Blog Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- Card 1 -->
+      <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 cursor-pointer" onclick="openModal('articleModal')">
+        <div class="h-44 bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center">
+          <span class="text-5xl">📱</span>
+        </div>
+        <div class="p-5">
+          <div class="flex gap-2 mb-2">
+            <span class="bg-purple-100 text-purple-600 text-xs font-bold px-2 py-0.5 rounded">รีวิว</span>
+          </div>
+          <h3 class="font-bold text-gray-900 mb-2 leading-snug">รีวิว iPhone 15 Pro: คุ้มค่าแค่ไหน?</h3>
+          <p class="text-gray-500 text-sm mb-4 line-clamp-2">พิสูจน์แล้วว่า iPhone 15 Pro นั้นคุ้มค่ากับราคาที่สูงขึ้นหรือไม่ มาดูกัน</p>
+          <div class="flex items-center justify-between text-xs text-gray-400">
+            <span>📅 28 เม.ย. 2568</span>
+            <span>👁️ 3,102</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 cursor-pointer" onclick="openModal('articleModal')">
+        <div class="h-44 bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center">
+          <span class="text-5xl">💻</span>
+        </div>
+        <div class="p-5">
+          <div class="flex gap-2 mb-2">
+            <span class="bg-green-100 text-green-600 text-xs font-bold px-2 py-0.5 rounded">เปรียบเทียบ</span>
+          </div>
+          <h3 class="font-bold text-gray-900 mb-2 leading-snug">MacBook vs Dell XPS: เลือกอะไรดี?</h3>
+          <p class="text-gray-500 text-sm mb-4 line-clamp-2">เปรียบเทียบแบบละเอียดระหว่าง MacBook Pro M3 และ Dell XPS 15 OLED</p>
+          <div class="flex items-center justify-between text-xs text-gray-400">
+            <span>📅 25 เม.ย. 2568</span>
+            <span>👁️ 5,891</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 cursor-pointer" onclick="openModal('articleModal')">
+        <div class="h-44 bg-gradient-to-br from-rose-400 to-red-600 flex items-center justify-center">
+          <span class="text-5xl">🎧</span>
+        </div>
+        <div class="p-5">
+          <div class="flex gap-2 mb-2">
+            <span class="bg-red-100 text-red-600 text-xs font-bold px-2 py-0.5 rounded">คู่มือ</span>
+          </div>
+          <h3 class="font-bold text-gray-900 mb-2 leading-snug">5 หูฟัง ANC ที่ดีที่สุดปี 2568</h3>
+          <p class="text-gray-500 text-sm mb-4 line-clamp-2">รวมหูฟังตัดเสียงรบกวน 5 รุ่นที่คุ้มค่าที่สุดในงบต่างๆ</p>
+          <div class="flex items-center justify-between text-xs text-gray-400">
+            <span>📅 20 เม.ย. 2568</span>
+            <span>👁️ 2,344</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 cursor-pointer" onclick="openModal('articleModal')">
+        <div class="h-44 bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center">
+          <span class="text-5xl">⌚</span>
+        </div>
+        <div class="p-5">
+          <div class="flex gap-2 mb-2">
+            <span class="bg-orange-100 text-orange-600 text-xs font-bold px-2 py-0.5 rounded">ข่าวสาร</span>
+          </div>
+          <h3 class="font-bold text-gray-900 mb-2 leading-snug">Apple Watch Series 10 จะมาแล้ว!</h3>
+          <p class="text-gray-500 text-sm mb-4 line-clamp-2">รายละเอียดล่าสุดของ Apple Watch Series 10 ที่หลุดมา</p>
+          <div class="flex items-center justify-between text-xs text-gray-400">
+            <span>📅 18 เม.ย. 2568</span>
+            <span>👁️ 4,567</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 cursor-pointer" onclick="openModal('articleModal')">
+        <div class="h-44 bg-gradient-to-br from-teal-400 to-cyan-600 flex items-center justify-center">
+          <span class="text-5xl">🖥️</span>
+        </div>
+        <div class="p-5">
+          <div class="flex gap-2 mb-2">
+            <span class="bg-teal-100 text-teal-600 text-xs font-bold px-2 py-0.5 rounded">คู่มือ</span>
+          </div>
+          <h3 class="font-bold text-gray-900 mb-2 leading-snug">จัดสเปกพีซีงบ 30,000 บาท</h3>
+          <p class="text-gray-500 text-sm mb-4 line-clamp-2">แนะนำสเปกพีซีที่เหมาะกับการทำงานและเกมในงบ 30,000 บาท</p>
+          <div class="flex items-center justify-between text-xs text-gray-400">
+            <span>📅 15 เม.ย. 2568</span>
+            <span>👁️ 6,012</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 cursor-pointer" onclick="openModal('articleModal')">
+        <div class="h-44 bg-gradient-to-br from-indigo-400 to-blue-600 flex items-center justify-center">
+          <span class="text-5xl">📡</span>
+        </div>
+        <div class="p-5">
+          <div class="flex gap-2 mb-2">
+            <span class="bg-indigo-100 text-indigo-600 text-xs font-bold px-2 py-0.5 rounded">ข่าวสาร</span>
+          </div>
+          <h3 class="font-bold text-gray-900 mb-2 leading-snug">5G ในไทย: ครอบคลุมแล้วกี่จังหวัด?</h3>
+          <p class="text-gray-500 text-sm mb-4 line-clamp-2">อัปเดตการขยายโครงข่าย 5G ในประเทศไทยล่าสุด</p>
+          <div class="flex items-center justify-between text-xs text-gray-400">
+            <span>📅 10 เม.ย. 2568</span>
+            <span>👁️ 1,987</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="bg-gray-900 text-gray-500 py-8 px-4 mt-10 text-center text-sm">
+    © 2567 TechSpace. สงวนลิขสิทธิ์ทุกประการ
+  </footer>
+
+  <!-- Article Modal -->
+  <div id="articleModal" class="fixed inset-0 z-50 hidden items-center justify-center modal-backdrop bg-black/60" onclick="closeModalOutside(event,'articleModal')">
+    <div class="bg-white w-full max-w-2xl mx-4 rounded-2xl shadow-2xl overflow-hidden max-h-[85vh] flex flex-col">
+      <div class="flex items-center justify-between px-6 py-4 border-b flex-shrink-0">
+        <div class="flex gap-2">
+          <span class="bg-orange-100 text-orange-600 text-xs font-bold px-2 py-0.5 rounded">AI</span>
+          <span class="bg-blue-100 text-blue-600 text-xs font-bold px-2 py-0.5 rounded">บทความแนะนำ</span>
+        </div>
+        <button onclick="closeModal('articleModal')" class="text-gray-400 hover:text-gray-700"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+      </div>
+      <div class="overflow-y-auto p-6">
+        <div class="h-44 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center mb-6">
+          <span class="text-6xl">🤖</span>
+        </div>
+        <h2 class="text-2xl font-extrabold text-gray-900 mb-3">AI ในปี 2025: เทคโนโลยีที่จะเปลี่ยนโลก</h2>
+        <div class="flex items-center gap-4 text-sm text-gray-400 mb-5">
+          <span>✍️ ทีมงาน TechSpace</span>
+          <span>📅 1 พ.ค. 2568</span>
+          <span>⏱️ อ่าน 5 นาที</span>
+        </div>
+        <div class="prose text-gray-600 leading-relaxed space-y-4 text-sm">
+          <p>ปัญญาประดิษฐ์ (Artificial Intelligence) หรือ AI กำลังก้าวหน้าอย่างก้าวกระโดดในปี 2025 โดยเฉพาะในด้านของ Large Language Models ที่ทำให้เราเห็นความสามารถใหม่ๆ ที่ไม่เคยเกิดขึ้นมาก่อน</p>
+          <p>บริษัทยักษ์ใหญ่อย่าง OpenAI, Google และ Anthropic ต่างแข่งขันกันพัฒนาโมเดล AI ของตน โดยแต่ละรุ่นที่ออกมามีความสามารถที่เพิ่มขึ้นอย่างมีนัยสำคัญ ไม่ว่าจะเป็นการเข้าใจบริบท การสร้างสรรค์ผลงาน หรือแม้แต่การเขียนโค้ด</p>
+          <p>ในอนาคตอันใกล้ เราจะเห็น AI ถูกนำมาใช้ในอุตสาหกรรมต่างๆ มากขึ้น ทั้งการแพทย์ การศึกษา การเงิน และอุตสาหกรรมสร้างสรรค์ การเปลี่ยนแปลงเหล่านี้จะส่งผลกระทบต่อวิธีที่เราทำงานและใช้ชีวิตอย่างมหาศาล</p>
+        </div>
+      </div>
+      <div class="border-t px-6 py-4 flex-shrink-0">
+        <button onclick="closeModal('articleModal')" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold transition-colors">ปิด</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div id="loginModal" class="fixed inset-0 z-50 hidden items-center justify-center modal-backdrop bg-black/50" onclick="closeModalOutside(event,'loginModal')">
+    <div class="bg-white w-full max-w-md mx-4 rounded-2xl shadow-2xl overflow-hidden">
+      <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-5 flex items-center justify-between">
+        <h3 class="text-white text-xl font-bold">เข้าสู่ระบบ</h3>
+        <button onclick="closeModal('loginModal')" class="text-white/80 hover:text-white"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+      </div>
+      <div class="p-6 space-y-4">
+        <div><label class="block text-sm font-semibold text-gray-700 mb-1">อีเมล</label><input type="email" placeholder="example@email.com" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"/></div>
+        <div><label class="block text-sm font-semibold text-gray-700 mb-1">รหัสผ่าน</label><input type="password" placeholder="••••••••" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"/></div>
+        <button onclick="closeModal('loginModal')" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold">เข้าสู่ระบบ</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openModal(id) { const m=document.getElementById(id); m.classList.remove('hidden'); m.classList.add('flex'); document.body.style.overflow='hidden'; }
+    function closeModal(id) { const m=document.getElementById(id); m.classList.add('hidden'); m.classList.remove('flex'); document.body.style.overflow=''; }
+    function closeModalOutside(e,id) { if(e.target===document.getElementById(id)) closeModal(id); }
+    function toggleMobileMenu() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
+  </script>
+</body>
+</html>
